@@ -1,0 +1,53 @@
+2=>
+SELECT orders.OrderID, orders.OrderDate,customers.Customername,customers.City,customers.Address,customers.PostalCode,
+shippers.ShipperName,products.productName,orderdetails.quantity
+FROM(((( Orders
+inner JOIN Customers ON orders.CustomerID=Customers.CustomerID)
+inner JOIN ShippersON orders.ShipperID=Shippers.ShipperID)
+inner JOIN OrderdetailsON Orderdetails.orderID=orders.orderID)
+inner JOIN Products ON Products.productID=Orderdetails.productID);
+3=>
+SELECT Products.ProductName,Shippers.ShipperName,
+FROM (((Orders
+inner JOIN Orderdetails ON Orderdetails.orderid=Orders.orderid)
+inner JOIN  products ON products.productid=Orderdetails.productid)
+inner JOIN shippers ON shippers.shipperid=Orders.shipperid);
+4=>
+SELECT shippers.shippername, count(products.productid) 
+FROM (((orders
+inner JOIN orderdetails ON orderdetails.orderid=orders.orderid)
+inner JOIN products ON products.productid=orderdetails.productid)
+inner JOIN Shippers ON Shippers.Shipperid=orders.Shipperid)
+GROUP BY shippers.shippername;
+5=>
+SELECT customers.customername
+FROM customers
+WHERE customers.customername NOT LIKE '%son%'
+6=>
+7=>
+SELECT customers.customername,SUM(orderdetails.quantity*products.price)
+FROM  (((customers
+inner JOIN orders ON orders.customerid=customers.customerid)
+inner JOIN orderdetails ON orderdetails.orderid=orders.orderid)
+inner JOIN products ON products.productid=orderdetails.productid)
+GROUP BY customers.customername;
+ 8=>
+SELECT sum(orderdetails.quantity*products.price)
+FROM orderdetails
+inner join products on products.productid=orderdetails.productid;
+9=>
+10=>
+11=>
+SELECT orderdate, sum ( orderdetails.quantity*products.price ) 
+FROM(( orders
+inner JOIN orderdetails ON orderdetails.orderid=orders.orderid)
+inner JOIN products ON products.productid=orderdetails.productid)
+GROUP BY orderdate;
+12=>
+SELECT customers.customername,sum(orderdetails.quantity*products.price) 
+FROM((( customers
+inner join orders on orders.customerid=customers.customerid)
+inner join orderdetails on orderdetails.orderid=orders.orderid)
+inner join products on products.productid=orderdetails.productid)
+group by customers.customername
+order by sum(orderdetails.quantity*products.price) DESC;
